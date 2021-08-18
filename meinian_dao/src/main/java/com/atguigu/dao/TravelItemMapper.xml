@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.atguigu.dao.TravelItemMapper">
+
+    <insert id="add">
+        insert into t_travelitem()
+        values(null,#{code},#{name},#{sex},#{age},#{price},#{type},#{attention},#{remark})
+    </insert>
+
+    <select id="selectTravelItem" resultType="com.atguigu.pojo.TravelItem">
+        select * from t_travelitem
+        <where>
+            <if test="queryString != null and queryString != '' ">
+                code = #{queryString} or name like "%${queryString}%"
+            </if>
+        </where>
+    </select>
+
+    <delete id="deleteById">
+        delete from t_travelitem where id = #{id}
+    </delete>
+   
+<select id="findById" resultType="com.atguigu.pojo.TravelItem">
+    select id,code,name,sex,age,price,type,attention,remark from t_travelitem where id = #{id}
+</select>
+
+    <update id="edit">
+        update t_travelitem set code = #{code},name = #{name},sex = #{sex},age = #{age}
+        ,price = #{price},type = #{type},attention = #{attention},remark = #{remark} where id = #{id}
+    </update>
+
+    <select id="findAll" resultType="com.atguigu.pojo.TravelItem">
+        select * from t_travelitem
+    </select>
+
+<!--    多表联查  移动端-->
+
+    <select id="findTravelItemByTravelId" resultType="com.atguigu.pojo.TravelItem">
+        select tl.id,tl.name
+        from t_travelitem tl
+        left join t_travelgroup_travelitem tlt
+        on tlt.travelitem_id = tl.id
+        where tlt.travelgroup_id = #{id}
+    </select>
+</mapper>

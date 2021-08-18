@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.atguigu.dao.OrderMapper">
+  <resultMap id="BaseResultMap" type="com.atguigu.pojo.Order">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="member_id" jdbcType="INTEGER" property="memberId" />
+    <result column="orderDate" jdbcType="DATE" property="orderdate" />
+    <result column="orderType" jdbcType="VARCHAR" property="ordertype" />
+    <result column="orderStatus" jdbcType="VARCHAR" property="orderstatus" />
+    <result column="setmeal_id" jdbcType="INTEGER" property="setmealId" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, member_id, orderDate, orderType, orderStatus, setmeal_id
+  </sql>
+  <select id="selectByExample" parameterType="com.atguigu.pojo.OrderExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_order
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_order
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_order
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.atguigu.pojo.OrderExample">
+    delete from t_order
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.atguigu.pojo.Order" useGeneratedKeys="true" keyProperty="id">
+    insert into t_order (id, member_id, orderDate, 
+      orderType, orderStatus, setmeal_id
+      )
+    values (#{id,jdbcType=INTEGER}, #{memberId,jdbcType=INTEGER}, #{orderdate,jdbcType=DATE}, 
+      #{ordertype,jdbcType=VARCHAR}, #{orderstatus,jdbcType=VARCHAR}, #{setmealId,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.atguigu.pojo.Order">
+    insert into t_order
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="memberId != null">
+        member_id,
+      </if>
+      <if test="orderdate != null">
+        orderDate,
+      </if>
+      <if test="ordertype != null">
+        orderType,
+      </if>
+      <if test="orderstatus != null">
+        orderStatus,
+      </if>
+      <if test="setmealId != null">
+        setmeal_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="memberId != null">
+        #{memberId,jdbcType=INTEGER},
+      </if>
+      <if test="orderdate != null">
+        #{orderdate,jdbcType=DATE},
+      </if>
+      <if test="ordertype != null">
+        #{ordertype,jdbcType=VARCHAR},
+      </if>
+      <if test="orderstatus != null">
+        #{orderstatus,jdbcType=VARCHAR},
+      </if>
+      <if test="setmealId != null">
+        #{setmealId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.atguigu.pojo.OrderExample" resultType="java.lang.Long">
+    select count(*) from t_order
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update t_order
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.memberId != null">
+        member_id = #{record.memberId,jdbcType=INTEGER},
+      </if>
+      <if test="record.orderdate != null">
+        orderDate = #{record.orderdate,jdbcType=DATE},
+      </if>
+      <if test="record.ordertype != null">
+        orderType = #{record.ordertype,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orderstatus != null">
+        orderStatus = #{record.orderstatus,jdbcType=VARCHAR},
+      </if>
+      <if test="record.setmealId != null">
+        setmeal_id = #{record.setmealId,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update t_order
+    set id = #{record.id,jdbcType=INTEGER},
+      member_id = #{record.memberId,jdbcType=INTEGER},
+      orderDate = #{record.orderdate,jdbcType=DATE},
+      orderType = #{record.ordertype,jdbcType=VARCHAR},
+      orderStatus = #{record.orderstatus,jdbcType=VARCHAR},
+      setmeal_id = #{record.setmealId,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.atguigu.pojo.Order">
+    update t_order
+    <set>
+      <if test="memberId != null">
+        member_id = #{memberId,jdbcType=INTEGER},
+      </if>
+      <if test="orderdate != null">
+        orderDate = #{orderdate,jdbcType=DATE},
+      </if>
+      <if test="ordertype != null">
+        orderType = #{ordertype,jdbcType=VARCHAR},
+      </if>
+      <if test="orderstatus != null">
+        orderStatus = #{orderstatus,jdbcType=VARCHAR},
+      </if>
+      <if test="setmealId != null">
+        setmeal_id = #{setmealId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.atguigu.pojo.Order">
+    update t_order
+    set member_id = #{memberId,jdbcType=INTEGER},
+      orderDate = #{orderdate,jdbcType=DATE},
+      orderType = #{ordertype,jdbcType=VARCHAR},
+      orderStatus = #{orderstatus,jdbcType=VARCHAR},
+      setmeal_id = #{setmealId,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+
+<!--  预约数据回显-->
+  <select id="findById" resultType="java.util.Map">
+        select m.`name` member,s.`name` setmeal,o.orderType,o.orderDate
+        from t_order o
+        left join t_member m
+        on o.member_id=m.id
+        left join t_setmeal s
+        on o.setmeal_id = s.id
+        where o.id = #{id}
+
+  </select>
+
+
+<!-- 运营统计数据 -->
+<!--  今日预约数-->
+  <select id="getTodayOrderNumber" resultType="int">
+    select count(*) from t_order where orderDate = #{today}
+  </select>
+<!--  今日出游数-->
+  <select id="getTodayVisitsNumber" resultType="int">
+    select count(*) from t_order where orderDate = #{today} and orderStatus = '已出游'
+  </select>
+<!--  本周预约数-->
+  <select id="getThisWeekOrderNumber" resultType="int">
+    select count(*) from t_order where orderDate between #{thisWeekMonday} and #{sunday}
+  </select>
+<!--  本周出游数-->
+  <select id="getThisWeekVisitsNumber" resultType="int">
+    select count(*) from t_order where orderDate between #{thisWeekMonday} and #{sunday} and orderStatus = '已出游'
+  </select>
+<!--  本月预约数-->
+  <select id="getThisMonthOrderNumber" resultType="int">
+    select count(*) from t_order where orderDate between #{firstDayThisMonth} and #{monthLast}
+  </select>
+<!--  本月出游数-->
+  <select id="getThisMonthVisitsNumber" resultType="int">
+    select count(*) from t_order where orderDate between #{firstDayThisMonth} and #{monthLast} and orderStatus = '已出游'
+  </select>
+<!--  热门套餐-->
+  <select id="findHotSetmeal" resultType="java.util.Map">
+    select s.`name`,count(*) setmeal_count,(count(*))/(select count(*) from t_order) proportion
+    from t_order o
+    left join t_setmeal s
+    on o.setmeal_id = s.id
+    group by s.name
+    order by setmeal_count desc
+    limit 0,6
+  </select>
+</mapper>

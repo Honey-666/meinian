@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.atguigu.dao.SetmealTravelgroupMapper">
+
+    <insert id="insert">
+        insert into t_setmeal_travelgroup values
+        <foreach collection="travelgroupIds" item="travelgroupId" separator=",">
+            (#{id},#{travelgroupId})
+        </foreach>
+    </insert>
+    <select id="count" resultType="java.lang.Long">
+        select count(1) from t_setmeal_travelgroup where setmeal_id = #{id}
+    </select>
+
+    <select id="findSetmealIdByTravelgroupId" resultType="java.lang.Integer">
+        select travelgroup_id from t_setmeal_travelgroup where setmeal_id = #{id}
+    </select>
+
+    <delete id="delete">
+        delete from t_setmeal_travelgroup where setmeal_id = #{id}
+    </delete>
+</mapper>
